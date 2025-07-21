@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <!-- you can use td or th but th will be bold in font -->
+        <tr>
+            <th>heading1</th>
+            <th>heading2</th>
+            <th>heading3</th>
+        </tr>
+        <tr>
+            <td>data1</td>
+            <td>data2</td>
+            <td>data3</td>
+        </tr>
+        <tr>
+            <td colspan="3">data4 will take 3 col see this in table</td>
+        </tr>
+        <tr>
+            <td rowspan="2">data5 will take 2 rows </td>
+            <td>data6</td>
+            <td>data7</td>
+        </tr>
+        <tr>
+            <td>data8</td>
+            <td>data9</td>
+    </table>
+
+</body>
+</html>
