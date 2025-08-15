@@ -1,0 +1,54 @@
+<style>
+  .stretch {
+    background-color: greenyellow;
+    border-color: aquamarine;
+    border-radius: 6px;
+    width: 60px;
+    height: 40px;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 20px;
+    transform: scale(1.2);
+
+  }
+
+  .stretch:hover{
+    background-color: greenyellow;
+    border-color: aquamarine;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .stretch:active{
+    background-color: greenyellow;
+    border-color: aquamarine;
+    box-shadow: none;
+    transform: perspective(100px) rotateX(20deg);
+  }
+</style>
+<button class="stretch">stretch</button>
+
+
+<style>
+  .shadow-button {
+    background-color: green;
+    color: white;
+    border: none;
+    font-size: 18px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+    cursor: pointer;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+  }
+
+  .shadow-button:active {
+    margin-top: 3px;
+    margin-left: 3px;
+    box-shadow: none;
+  }
+</style>
+
+<button class="shadow-button">
+  Shadow
+</button>
