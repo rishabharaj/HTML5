@@ -13,6 +13,63 @@ function hideWelcomeScreen() {
     }
 }
 
+// Setup resizer functionality
+function setupResizer() {
+    const resizer = document.getElementById('resizer');
+    const demoSection = document.querySelector('.demo-section');
+    const codeSection = document.querySelector('.code-section');
+    const contentArea = document.querySelector('.content-area');
+    
+    let isResizing = false;
+    
+    resizer.addEventListener('mousedown', function(e) {
+        isResizing = true;
+        resizer.classList.add('resizing');
+        document.body.style.cursor = 'ns-resize';
+        document.body.style.userSelect = 'none';
+        
+        const startY = e.clientY;
+        const startDemoHeight = demoSection.offsetHeight;
+        const totalHeight = contentArea.offsetHeight - resizer.offsetHeight;
+        
+        function handleMouseMove(e) {
+            if (!isResizing) return;
+            
+            const deltaY = e.clientY - startY;
+            const newDemoHeight = startDemoHeight + deltaY;
+            const minHeight = 200;
+            const maxHeight = totalHeight - minHeight;
+            
+            if (newDemoHeight >= minHeight && newDemoHeight <= maxHeight) {
+                const demoPercent = (newDemoHeight / totalHeight) * 100;
+                const codePercent = 100 - demoPercent;
+                
+                demoSection.style.flex = `0 0 ${demoPercent}%`;
+                codeSection.style.flex = `0 0 ${codePercent}%`;
+                
+                // Trigger Monaco editor resize
+                if (editor) {
+                    setTimeout(() => editor.layout(), 100);
+                }
+            }
+        }
+        
+        function handleMouseUp() {
+            isResizing = false;
+            resizer.classList.remove('resizing');
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleMouseUp);
+        }
+        
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
+        
+        e.preventDefault();
+    });
+}
+
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
     initializeMonacoEditor();
@@ -183,6 +240,9 @@ function setupEventListeners() {
             document.getElementById('welcomeScreen').classList.add('hidden');
         }
     });
+    
+    // Setup resizer functionality
+    setupResizer();
 }
 
 // Toggle fullscreen for demo
