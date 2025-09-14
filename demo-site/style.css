@@ -213,7 +213,7 @@ body {
     flex: 0 0 50%;
     display: flex;
     flex-direction: column;
-    min-height: 300px;
+    min-height: 50px;
     margin-bottom: 0.5rem;
 }
 
@@ -232,13 +232,21 @@ body {
     background: white;
 }
 
+/* Resizer Container */
+.resizer-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.25rem 0;
+}
+
 /* Resizer */
 .resizer {
+    flex: 1;
     height: 8px;
     background: linear-gradient(45deg, #667eea, #764ba2);
     cursor: ns-resize;
     position: relative;
-    margin: 0.25rem 0;
     border-radius: 4px;
     opacity: 0.7;
     transition: all 0.2s ease;
@@ -247,7 +255,6 @@ body {
 .resizer:hover {
     opacity: 1;
     height: 10px;
-    margin: 0.15rem 0;
 }
 
 .resizer::before {
@@ -268,12 +275,45 @@ body {
     background: linear-gradient(45deg, #5a6cf8, #6b5b95);
 }
 
+/* Layout Buttons */
+.layout-buttons {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.layout-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    color: #2c3e50;
+    font-weight: bold;
+}
+
+.layout-btn:hover {
+    background: white;
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.layout-btn.active {
+    background: #667eea;
+    color: white;
+}
+
 /* Code Section */
 .code-section {
     flex: 1;
     display: flex;
     flex-direction: column;
-    min-height: 300px;
+    min-height: 50px;  
     margin-top: 0.5rem;
 }
 
@@ -389,7 +429,7 @@ body {
     }
     
     .demo-section, .code-section {
-        min-height: 300px;
+        min-height: 150px;
     }
 }
 

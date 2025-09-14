@@ -37,15 +37,19 @@ function setupResizer() {
             
             const deltaY = e.clientY - startY;
             const newDemoHeight = startDemoHeight + deltaY;
-            const minHeight = 200;
+            const minHeight = 50; // Super flexible - minimum 50px
             const maxHeight = totalHeight - minHeight;
             
             if (newDemoHeight >= minHeight && newDemoHeight <= maxHeight) {
                 const demoPercent = (newDemoHeight / totalHeight) * 100;
                 const codePercent = 100 - demoPercent;
                 
-                demoSection.style.flex = `0 0 ${demoPercent}%`;
-                codeSection.style.flex = `0 0 ${codePercent}%`;
+                // Allow extreme sizing: 5% to 95%
+                const finalDemoPercent = Math.max(5, Math.min(95, demoPercent));
+                const finalCodePercent = 100 - finalDemoPercent;
+                
+                demoSection.style.flex = `0 0 ${finalDemoPercent}%`;
+                codeSection.style.flex = `0 0 ${finalCodePercent}%`;
                 
                 // Trigger Monaco editor resize
                 if (editor) {
@@ -68,6 +72,53 @@ function setupResizer() {
         
         e.preventDefault();
     });
+}
+
+// Setup layout buttons functionality
+function setupLayoutButtons() {
+    const demoSection = document.querySelector('.demo-section');
+    const codeSection = document.querySelector('.code-section');
+    
+    // 50-50 Layout
+    document.getElementById('layout50-50').addEventListener('click', function() {
+        setLayout(50, 50);
+        updateActiveLayoutButton('layout50-50');
+    });
+    
+    // 70-30 Layout (More Preview)
+    document.getElementById('layout70-30').addEventListener('click', function() {
+        setLayout(70, 30);
+        updateActiveLayoutButton('layout70-30');
+    });
+    
+    // 30-70 Layout (More Code)
+    document.getElementById('layout30-70').addEventListener('click', function() {
+        setLayout(30, 70);
+        updateActiveLayoutButton('layout30-70');
+    });
+    
+    function setLayout(demoPercent, codePercent) {
+        demoSection.style.flex = `0 0 ${demoPercent}%`;
+        codeSection.style.flex = `0 0 ${codePercent}%`;
+        
+        // Trigger Monaco editor resize
+        if (editor) {
+            setTimeout(() => editor.layout(), 200);
+        }
+    }
+    
+    function updateActiveLayoutButton(activeId) {
+        // Remove active class from all buttons
+        document.querySelectorAll('.layout-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Add active class to clicked button
+        document.getElementById(activeId).classList.add('active');
+    }
+    
+    // Set default active button
+    updateActiveLayoutButton('layout50-50');
 }
 
 // Initialize the application
@@ -645,6 +696,9 @@ function setupEventListeners() {
     
     // Setup resizer functionality
     setupResizer();
+    
+    // Setup layout buttons
+    setupLayoutButtons();
 }
 
 // Toggle fullscreen for demo
