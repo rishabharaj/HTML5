@@ -4,6 +4,15 @@ let currentFile = null;
 let originalContent = '';
 let fileList = [];
 
+// Function to hide welcome screen
+function hideWelcomeScreen() {
+    const welcomeScreen = document.getElementById('welcomeScreen');
+    if (welcomeScreen) {
+        welcomeScreen.classList.add('hidden');
+        console.log('Welcome screen hidden');
+    }
+}
+
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
     initializeMonacoEditor();
@@ -160,9 +169,13 @@ function setupEventListeners() {
     document.getElementById('resetBtn').addEventListener('click', resetChanges);
     
     // Close welcome screen button
-    document.getElementById('closeWelcome').addEventListener('click', function() {
-        document.getElementById('welcomeScreen').classList.add('hidden');
-    });
+    const closeBtn = document.getElementById('closeWelcome');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            console.log('Close button clicked'); // Debug log
+            document.getElementById('welcomeScreen').classList.add('hidden');
+        });
+    }
     
     // ESC key to close welcome screen
     document.addEventListener('keydown', function(e) {
