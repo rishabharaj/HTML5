@@ -159,6 +159,11 @@ function setupEventListeners() {
     // Reset button
     document.getElementById('resetBtn').addEventListener('click', resetChanges);
     
+    // Close welcome screen button
+    document.getElementById('closeWelcome').addEventListener('click', function() {
+        document.getElementById('welcomeScreen').classList.add('hidden');
+    });
+    
     // ESC key to close welcome screen
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
