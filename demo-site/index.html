@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5 Demo Repository</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs/editor/editor.main.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>HTML5 Demo Repository</h1>
+            <p>Interactive HTML/CSS/JS Examples with Live Preview</p>
+            <div class="github-link">
+                <a href="https://github.com/rishabharaj/HTML5" target="_blank">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    View on GitHub
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <h3>HTML Files</h3>
+                <div class="file-list" id="fileList">
+                    <!-- Files will be loaded here by JavaScript -->
+                </div>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="content-area">
+                <!-- Demo Section -->
+                <section class="demo-section">
+                    <div class="section-header">
+                        <h3>Live Preview</h3>
+                        <div class="controls">
+                            <button id="refreshBtn" class="btn-secondary">Refresh</button>
+                            <button id="fullscreenBtn" class="btn-secondary">Fullscreen</button>
+                        </div>
+                    </div>
+                    <div class="demo-container">
+                        <iframe id="demoFrame" src="about:blank"></iframe>
+                    </div>
+                </section>
+
+                <!-- Code Editor Section -->
+                <section class="code-section">
+                    <div class="section-header">
+                        <h3>Code Editor</h3>
+                        <div class="controls">
+                            <button id="saveBtn" class="btn-primary">Apply Changes</button>
+                            <button id="resetBtn" class="btn-secondary">Reset</button>
+                        </div>
+                    </div>
+                    <div class="editor-container">
+                        <div id="editor"></div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Welcome Screen -->
+        <div class="welcome-screen" id="welcomeScreen">
+            <div class="welcome-content">
+                <h2>Welcome to HTML5 Demo Repository</h2>
+                <p>This is an interactive demo of various HTML, CSS, and JavaScript examples.</p>
+                <ul>
+                    <li>📁 Browse HTML files from the sidebar</li>
+                    <li>👁️ See live previews in the demo area</li>
+                    <li>✏️ Edit code with syntax highlighting</li>
+                    <li>🔄 See real-time changes</li>
+                </ul>
+                <p>Select a file from the sidebar to get started!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monaco Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs/loader.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

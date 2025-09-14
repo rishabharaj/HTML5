@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5 Demo Repository</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .redirect-container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            margin: 2rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .demo-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: #27ae60;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.3);
+        }
+        
+        .demo-btn:hover {
+            background: #229954;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(39, 174, 96, 0.4);
+        }
+        
+        .features {
+            margin-top: 3rem;
+            text-align: left;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        
+        .feature::before {
+            content: "✨";
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .countdown {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #f39c12;
+            margin: 1rem 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .auto-redirect {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="redirect-container">
+        <h1>🚀 HTML5 Demo</h1>
+        <p>Welcome to the Interactive HTML5 Examples Repository!</p>
+        
+        <div class="countdown" id="countdown">5</div>
+        <p class="auto-redirect">Redirecting to demo site in <span id="seconds">5</span> seconds...</p>
+        
+        <a href="demo-site/" class="demo-btn" id="demoBtn">🎯 View Interactive Demo</a>
+        
+        <div class="features">
+            <div class="feature">Live Code Editor with Syntax Highlighting</div>
+            <div class="feature">Real-time Preview of HTML Examples</div>
+            <div class="feature">17+ Interactive HTML/CSS/JS Examples</div>
+            <div class="feature">Responsive Design for All Devices</div>
+        </div>
+    </div>
+
+    <script>
+        let seconds = 5;
+        const countdownEl = document.getElementById('countdown');
+        const secondsEl = document.getElementById('seconds');
+        const demoBtn = document.getElementById('demoBtn');
+        
+        const countdown = setInterval(() => {
+            seconds--;
+            countdownEl.textContent = seconds;
+            secondsEl.textContent = seconds;
+            
+            if (seconds <= 0) {
+                clearInterval(countdown);
+                window.location.href = 'demo-site/';
+            }
+        }, 1000);
+        
+        // Stop countdown if user clicks the button
+        demoBtn.addEventListener('click', () => {
+            clearInterval(countdown);
+        });
+        
+        // Stop countdown on any user interaction
+        document.addEventListener('click', () => {
+            clearInterval(countdown);
+            countdownEl.style.display = 'none';
+            document.querySelector('.auto-redirect').style.display = 'none';
+        });
+        
+        document.addEventListener('keydown', () => {
+            clearInterval(countdown);
+            countdownEl.style.display = 'none';
+            document.querySelector('.auto-redirect').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
