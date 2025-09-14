@@ -82,6 +82,21 @@ function initializeMonacoEditor() {
     require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs' } });
     
     require(['vs/editor/editor.main'], function() {
+        // Configure HTML language features
+        monaco.languages.html.htmlDefaults.setOptions({
+            format: {
+                tabSize: 2,
+                insertSpaces: true,
+                wrapLineLength: 120,
+                unformatted: 'default'
+            },
+            suggest: {
+                html5: true,
+                angular1: false,
+                ionic: false
+            }
+        });
+
         editor = monaco.editor.create(document.getElementById('editor'), {
             value: '<!-- Select a file from the sidebar to start editing -->\n<!-- Your changes will be reflected in real-time -->',
             language: 'html',
@@ -93,7 +108,383 @@ function initializeMonacoEditor() {
             wordWrap: 'on',
             scrollBeyondLastLine: false,
             folding: true,
-            renderWhitespace: 'selection'
+            renderWhitespace: 'selection',
+            // Enhanced autocomplete settings
+            quickSuggestions: {
+                other: true,
+                comments: false,
+                strings: true
+            },
+            parameterHints: {
+                enabled: true
+            },
+            autoClosingTags: true,
+            autoClosingBrackets: 'always',
+            autoClosingQuotes: 'always',
+            autoIndent: 'full',
+            formatOnPaste: true,
+            formatOnType: true,
+            suggestOnTriggerCharacters: true,
+            acceptSuggestionOnEnter: 'on',
+            tabCompletion: 'on',
+            wordBasedSuggestions: true,
+            // Enhanced auto-closing features
+            autoClosingPairs: [
+                { open: '<', close: '>' },
+                { open: '"', close: '"' },
+                { open: "'", close: "'" },
+                { open: '(', close: ')' },
+                { open: '[', close: ']' },
+                { open: '{', close: '}' }
+            ],
+            autoSurroundingPairs: [
+                { open: '<', close: '>' },
+                { open: '"', close: '"' },
+                { open: "'", close: "'" },
+                { open: '(', close: ')' },
+                { open: '[', close: ']' },
+                { open: '{', close: '}' }
+            ],
+            // IntelliSense settings
+            hover: {
+                enabled: true
+            },
+            lightbulb: {
+                enabled: true
+            }
+        });
+
+        // Register custom HTML snippets with auto-closing tags
+        monaco.languages.registerCompletionItemProvider('html', {
+            provideCompletionItems: function(model, position) {
+                const suggestions = [
+                    {
+                        label: 'html5-template',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: [
+                            '<!DOCTYPE html>',
+                            '<html lang="en">',
+                            '<head>',
+                            '    <meta charset="UTF-8">',
+                            '    <meta name="viewport" content="width=device-width, initial-scale=1.0">',
+                            '    <title>${1:Document}</title>',
+                            '</head>',
+                            '<body>',
+                            '    ${2:<!-- Your content here -->}',
+                            '</body>',
+                            '</html>'
+                        ].join('\n'),
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'HTML5 Document Template'
+                    },
+                    {
+                        label: 'div',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: '<div${1: class="${2:container}"}>${3:Content}</div>',
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'Div element with auto-closing tag'
+                    },
+                    {
+                        label: 'p',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: '<p${1: class="${2:text}"}>${3:Paragraph text}</p>',
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'Paragraph element with auto-closing tag'
+                    },
+                    {
+                        label: 'span',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: '<span${1: class="${2:highlight}"}>${3:Text}</span>',
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'Span element with auto-closing tag'
+                    },
+                    {
+                        label: 'h1',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: '<h1${1: class="${2:title}"}>${3:Heading 1}</h1>',
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'H1 heading with auto-closing tag'
+                    },
+                    {
+                        label: 'h2',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: '<h2${1: class="${2:subtitle}"}>${3:Heading 2}</h2>',
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'H2 heading with auto-closing tag'
+                    },
+                    {
+                        label: 'h3',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: '<h3${1: class="${2:section-title}"}>${3:Heading 3}</h3>',
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'H3 heading with auto-closing tag'
+                    },
+                    {
+                        label: 'ul',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: [
+                            '<ul${1: class="${2:list}"}>', 
+                            '    <li>${3:Item 1}</li>',
+                            '    <li>${4:Item 2}</li>',
+                            '    <li>${5:Item 3}</li>',
+                            '</ul>'
+                        ].join('\n'),
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'Unordered list with items'
+                    },
+                    {
+                        label: 'ol',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: [
+                            '<ol${1: class="${2:numbered-list}"}>', 
+                            '    <li>${3:Item 1}</li>',
+                            '    <li>${4:Item 2}</li>',
+                            '    <li>${5:Item 3}</li>',
+                            '</ol>'
+                        ].join('\n'),
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'Ordered list with items'
+                    },
+                    {
+                        label: 'li',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: '<li${1: class="${2:item}"}>${3:List item}</li>',
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'List item with auto-closing tag'
+                    },
+                    {
+                        label: 'a',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: '<a href="${1:#}" ${2:class="${3:link}"}>${4:Link text}</a>',
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'Anchor link with auto-closing tag'
+                    },
+                    {
+                        label: 'img',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: '<img src="${1:image.jpg}" alt="${2:Description}" ${3:class="${4:image}"}${5: width="${6:300}"}>',
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'Image element (self-closing)'
+                    },
+                    {
+                        label: 'table',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: [
+                            '<table${1: class="${2:table}"}>', 
+                            '    <thead>',
+                            '        <tr>',
+                            '            <th>${3:Header 1}</th>',
+                            '            <th>${4:Header 2}</th>',
+                            '        </tr>',
+                            '    </thead>',
+                            '    <tbody>',
+                            '        <tr>',
+                            '            <td>${5:Data 1}</td>',
+                            '            <td>${6:Data 2}</td>',
+                            '        </tr>',
+                            '    </tbody>',
+                            '</table>'
+                        ].join('\n'),
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'Table with headers and body'
+                    },
+                    {
+                        label: 'btn',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: '<button type="${1:button}" class="${2:btn}">${3:Click me}</button>',
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'Button element with type and class'
+                    },
+                    {
+                        label: 'form-input',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: [
+                            '<div class="form-group">',
+                            '    <label for="${1:inputId}">${2:Label}</label>',
+                            '    <input type="${3:text}" id="${1:inputId}" name="${4:inputName}" placeholder="${5:Enter text}">',
+                            '</div>'
+                        ].join('\n'),
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'Form input with label'
+                    },
+                    {
+                        label: 'card',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: [
+                            '<div class="card">',
+                            '    <div class="card-header">',
+                            '        <h3>${1:Card Title}</h3>',
+                            '    </div>',
+                            '    <div class="card-body">',
+                            '        <p>${2:Card content goes here}</p>',
+                            '    </div>',
+                            '</div>'
+                        ].join('\n'),
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'Card component'
+                    },
+                    {
+                        label: 'nav',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: [
+                            '<nav class="navbar">',
+                            '    <ul class="nav-list">',
+                            '        <li class="nav-item"><a href="${1:#}" class="nav-link">${2:Home}</a></li>',
+                            '        <li class="nav-item"><a href="${3:#}" class="nav-link">${4:About}</a></li>',
+                            '        <li class="nav-item"><a href="${5:#}" class="nav-link">${6:Contact}</a></li>',
+                            '    </ul>',
+                            '</nav>'
+                        ].join('\n'),
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'Navigation bar'
+                    },
+                    {
+                        label: 'grid',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: [
+                            '<div class="grid-container">',
+                            '    <div class="grid-item">${1:Item 1}</div>',
+                            '    <div class="grid-item">${2:Item 2}</div>',
+                            '    <div class="grid-item">${3:Item 3}</div>',
+                            '</div>'
+                        ].join('\n'),
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'CSS Grid container'
+                    },
+                    {
+                        label: 'flex',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: [
+                            '<div class="flex-container">',
+                            '    <div class="flex-item">${1:Item 1}</div>',
+                            '    <div class="flex-item">${2:Item 2}</div>',
+                            '    <div class="flex-item">${3:Item 3}</div>',
+                            '</div>'
+                        ].join('\n'),
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'Flexbox container'
+                    }
+                ];
+                return { suggestions: suggestions };
+            }
+        });
+
+        // Register CSS snippets
+        monaco.languages.registerCompletionItemProvider('css', {
+            provideCompletionItems: function(model, position) {
+                const suggestions = [
+                    {
+                        label: 'flexbox',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: [
+                            'display: flex;',
+                            'justify-content: ${1:center};',
+                            'align-items: ${2:center};',
+                            'flex-direction: ${3:row};'
+                        ].join('\n'),
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'Flexbox container properties'
+                    },
+                    {
+                        label: 'grid',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: [
+                            'display: grid;',
+                            'grid-template-columns: ${1:repeat(3, 1fr)};',
+                            'grid-gap: ${2:20px};'
+                        ].join('\n'),
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'CSS Grid container'
+                    },
+                    {
+                        label: 'center',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: [
+                            'position: absolute;',
+                            'top: 50%;',
+                            'left: 50%;',
+                            'transform: translate(-50%, -50%);'
+                        ].join('\n'),
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'Center element absolutely'
+                    },
+                    {
+                        label: 'button-style',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: [
+                            'padding: ${1:10px 20px};',
+                            'border: none;',
+                            'border-radius: ${2:5px};',
+                            'background: ${3:#007bff};',
+                            'color: white;',
+                            'cursor: pointer;',
+                            'transition: all 0.3s ease;'
+                        ].join('\n'),
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'Button styling'
+                    },
+                    {
+                        label: 'card-shadow',
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: [
+                            'box-shadow: 0 ${1:4px} ${2:8px} rgba(0, 0, 0, ${3:0.1});',
+                            'border-radius: ${4:8px};',
+                            'background: white;',
+                            'padding: ${5:20px};'
+                        ].join('\n'),
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: 'Card with shadow effect'
+                    }
+                ];
+                return { suggestions: suggestions };
+            }
+        });
+
+        // Add keyboard shortcuts
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, function() {
+            applyChanges();
+        });
+        
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyR, function() {
+            resetChanges();
+        });
+
+        editor.addCommand(monaco.KeyCode.F5, function() {
+            updatePreview();
+        });
+
+        // Enhanced auto-closing tag behavior
+        editor.onDidType(function(text) {
+            if (text === '>') {
+                const position = editor.getPosition();
+                const model = editor.getModel();
+                const lineContent = model.getLineContent(position.lineNumber);
+                const beforeCursor = lineContent.substring(0, position.column - 1);
+                
+                // Check if we just typed a closing >
+                const tagMatch = beforeCursor.match(/<(\w+)(?:\s[^>]*)?$/);
+                if (tagMatch) {
+                    const tagName = tagMatch[1].toLowerCase();
+                    // List of self-closing tags that don't need closing tags
+                    const selfClosingTags = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr'];
+                    
+                    if (!selfClosingTags.includes(tagName)) {
+                        // Insert closing tag and position cursor
+                        const edit = {
+                            range: new monaco.Range(position.lineNumber, position.column, position.lineNumber, position.column),
+                            text: `</${tagName}>`
+                        };
+                        
+                        model.pushEditOperations([], [edit], () => null);
+                        
+                        // Position cursor between opening and closing tags
+                        editor.setPosition({
+                            lineNumber: position.lineNumber,
+                            column: position.column
+                        });
+                    }
+                }
+            }
         });
 
         // Setup real-time preview
@@ -177,9 +568,20 @@ async function loadFile(filename) {
         
         const content = await response.text();
         
+        // Detect file language
+        let language = 'html';
+        if (filename.endsWith('.css')) {
+            language = 'css';
+        } else if (filename.endsWith('.js')) {
+            language = 'javascript';
+        } else if (filename.endsWith('.json')) {
+            language = 'json';
+        }
+
         // Update editor
         if (editor) {
             editor.setValue(content);
+            monaco.editor.setModelLanguage(editor.getModel(), language);
             originalContent = content;
             currentFile = filename;
         }
