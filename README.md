@@ -2,6 +2,8 @@
 
 Welcome to the **HTML5 Demo Repository** - an interactive showcase of HTML, CSS, and JavaScript examples!
 
+![HTML5 Demo Site Preview](demo-site/demo.png)
+
 ## 🌐 Live Interactive Demo
 
 **🎯 [Visit the Live Demo Website](https://rishabharaj.github.io/HTML5/demo-site/)**
